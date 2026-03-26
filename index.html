@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Bestie!</title>
+    <style>
+        :root {
+            --biscuit: #5D4037;
+            --icing: #fff;
+            --fill: #F6D8D1;
+            --purple: #94AEFF;
+            --grey: #ccc;
+            --green: #008773;
+            --sky: #0CBAE8;
+            --rose: #D16D6B;
+            --background: #2b2d42;
+            --white: #ffffff;
+        }
+
+        * { padding: 0; margin: 0; box-sizing: border-box; }
+
+        body { 
+            background-color: var(--background); 
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-text {
+            margin-top: 5vh;
+            text-align: center;
+            color: var(--white);
+            text-transform: capitalize;
+            font-size: 2em;
+            text-shadow: 0 0 10px var(--sky);
+            z-index: 10;
+        }
+
+        /* --- Cake Styles --- */
+        .box {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 20px auto;
+            cursor: pointer;
+            z-index: 5;
+            transition: transform 0.5s ease;
+        }
+        
+        .box:hover { transform: scale(1.02); }
+
+        .plate {
+            position: absolute;
+            width: 70%; height: 40%;
+            border-radius: 50%;
+            background: var(--grey);
+            bottom: 10%; left: 15%;
+            box-shadow: -7px 25px 53px -2px rgba(0, 0, 0, 0.5);
+        }
+
+        .layer {
+            background: var(--biscuit);
+            position: absolute;
+            bottom: 17.5%; left: 23%;
+            width: 55%; height: 35%;
+            border-radius: 50%;
+        }
+
+        .layer:nth-of-type(2) { bottom: 33%; height: 33%; z-index: 1; }
+
+        .layer::after, .layer:before {
+            content: ''; position: absolute;
+            top: -10%; bottom: -10%;
+            height: 70%; width: 100%;
+            border-radius: 50%; background: var(--biscuit);
+        }
+
+        .fill {
+            background: var(--fill);
+            position: absolute;
+            bottom: 20%; left: -.5%;
+            width: 100%; height: 80%;
+            border-radius: 50%;
+        }
+
+        .icing {
+            background: white;
+            position: absolute;
+            top: 27%; left: 23%;
+            width: 55%; height: 25%;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .icing-sm {
+            position: absolute;
+            background: white;
+            height: 50%; width: 10%;
+            border-radius: 0 0 50% 50%;
+            top: 45%;
+        }
+
+        .icing-sm:nth-child(2) { height: 70%; top: 70%; left: 25%; }
+        .icing-sm:nth-child(3) { width: 15%; height: 80%; top: 50%; right: 15%; }
+        .icing-sm:nth-child(4) { height: 30%; left: 45%; top: 85%; }
+        .icing-sm:nth-child(5) { left: 12%; top: 70%; }
+        .icing-sm:nth-child(6) { left: 92%; top: 56%; }
+
+        .candles {
+            position: absolute; width: 50%; height: 40%;
+            left: 25%; top: 20%; z-index: 3;
+        }
+
+        .candle {
+            position: absolute; background: var(--rose);
+            width: 5%; height: 30%; border-radius: 10px / 4px;
+            top: 5%; left: 50%; margin-left: -8px;
+        }
+        .candle:nth-child(2) { top: 20%; left: 25%; }
+        .candle:nth-child(3) { top: 20%; left: 75%; }
+
+        .flame {
+            position: absolute; background: orange;
+            width: 16px; height: 24px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: -25px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px orange;
+            animation: flicker 0.5s infinite alternate;
+        }
+
+        /* --- Wish Card Styles --- */
+        #wish-card {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 100;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 320px;
+        }
+
+        #wish-card.show { transform: translate(-50%, -50%) scale(1); }
+
+        #wish-card h2 { color: var(--rose); margin-bottom: 15px; }
+        #wish-card p { color: #555; font-size: 1.1em; text-shadow: none; }
+        
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--background);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* --- Animations --- */
+        @keyframes flicker {
+            0% { transform: translateX(-50%) skewX(2deg) scale(1); }
+            100% { transform: translateX(-50%) skewX(-2deg) scale(1.1); }
+        }
+
+        .pyro { display: none; } /* Hidden until click */
+
+        /* Fireworks animation logic (simplified) */
+        .pyro > .before, .pyro > .after {
+            position: absolute; width: 5px; height: 5px; border-radius: 50%;
+            box-shadow: 0 0 white, 100px 100px red, -100px 50px blue, 50px -100px yellow; /* Just placeholders */
+            animation: 1s bang ease-out infinite, 1s gravity ease-in infinite;
+        }
+
+        /* ... Include your existing bang/gravity/position keyframes here ... */
+    </style>
+</head>
+<body>
+
+    <div class="header-text">
+        <p>♥ Happy Birthday to my Bestie ♥</p>
+        <p style="font-size: 0.6em; margin-top: 5px;">(Click the cake to see a wish)</p>
+    </div>
+
+    <div class="box" onclick="makeWish()">
+        <div class="plate"></div>
+        <div class="layer"><div class="fill"></div></div>
+        <div class="layer"><div class="fill"></div></div>
+        <div class="icing">
+            <div class="icing-sm"></div><div class="icing-sm"></div>
+            <div class="icing-sm"></div><div class="icing-sm"></div>
+            <div class="icing-sm"></div><div class="icing-sm"></div>
+        </div>
+        <div class="candles">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+    </div>
+
+    <div id="wish-card">
+        <h2>To My Bestie! 🌟</h2>
+        <p>Happy Birthday Ny! I wish you all the happiness in the world. May your year be full of love, laughter, and success!</p>
+        <p>Love you always! ❤️</p>
+        <button class="close-btn" onclick="closeCard()">💖 Thank you!</button>
+    </div>
+
+    <div class="pyro" id="fireworks">
+        <div class="before"></div>
+        <div class="after"></div>
+    </div>
+
+    <script>
+        function makeWish() {
+            // 1. Hide the flames
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(f => f.style.display = 'none');
+
+            // 2. Show the fireworks
+            document.getElementById('fireworks').style.display = 'block';
+
+            // 3. Show the wish card
+            setTimeout(() => {
+                document.getElementById('wish-card').classList.add('show');
+            }, 500);
+        }
+
+        function closeCard() {
+            document.getElementById('wish-card').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
